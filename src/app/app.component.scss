@@ -1,0 +1,512 @@
+$font-stack:Helvetica, sans-serif;
+$primary-color:#333;
+
+
+//null
+$i-am-null: null;
+
+//booleans
+$i-am-true: true;
+$i-am-false: false;
+
+//number
+$a-number: 7;
+
+//strings
+$name: 'Karl Hadwen';
+$name2: Karl Hadwen;
+$name-together: 'Karl' + 'Hadwen';
+
+//color
+$color: lighten(white, 15%);
+$venus: #998099;
+
+//arithmetic operators
+h1{
+    font-size: 4px + 2;
+}
+
+h2{
+    font-size: 4px - 2;
+}
+
+h3{
+    font-size: (10/2);
+    opacity: random(4) / 5;
+    padding-right: 2px / 4px + 3px;
+}
+
+h4{
+    width: 3px * 5 + 5px;
+    width: 3 * (5px + 5px);
+    width: 3px + (6px / 2) * 3;
+}
+
+body{
+    font: 100% $font-stack;
+    color: $primary-color;
+}
+
+@mixin font-fl($font){
+    &after{
+        //@if(type-of($font) == string){
+        @if(type-of($font) != false){
+            content: 'My font is #{$font}';
+        }@else{
+            content: 'Sorry, the argument #{$font} is a #{type-of($font)}.'
+        }
+    }
+}
+
+h2{
+    @include font-fl(sans-serif);
+}
+
+$padding: 50px;
+
+h2{
+    @if($padding <= 20px){
+        padding: $padding;
+    }@else{
+        padding: $padding / 2;
+    }
+}
+
+$var1: "foo";
+$var2: "bazxsd";
+
+@mixin font-fl(){
+    &:after{
+        @if $var1 == "foo" and $var2 == "bar2"{
+            content: "var1 and var2 are true";
+    }@else{
+        content: "var1 and var2 are false";
+    }
+}
+}
+
+h2{
+    @include font-fl();
+}
+
+$first-name: "Karl";
+$last-name: "Hadwen";
+
+@mixin string-concat-name{
+    &:after{
+        content: "your name is: " + $first-name + " " + $last-name;
+    }
+}
+
+h2{
+    @include string-concat-name;
+}
+/*
+h1{
+    color: rgba(70, 132, 153, 1) + rgba(32, 68, 121, 1);
+}
+
+h2{
+    color: #DC143C + #B0171F
+}*/
+/*
+h3{
+    color: rgba(70, 132, 153, 0.5) + rgba(32, 68, 121, 0.5);
+}*/
+
+.button{
+    &:visited{color: white;}
+    &:hover{color:white;}
+    &:active{color:white;}
+}
+
+.button{
+    & > span{color:white;}
+    & + span{color:white;}
+    & ~ span{color:white;}
+}
+
+.btn{
+    &-primary{color:white;}
+    &-secondary{color:white;}
+}
+
+.button{
+    body.page-about & {color:white;}
+}
+
+$name : "karl";
+
+//@import 'partials/_reset';
+/*
+#main{
+    @import 'partials/_reset';
+}*/
+
+$font-base: 16px;
+
+@mixin sample{
+    font-size: $font-base;
+}
+
+@mixin large-text{
+    font:{
+        family: Arial;
+        size:20px;
+        weight:bold
+    }
+    color:#ff0000;
+}
+
+p{
+    @include sample;
+}
+
+h1{
+    @include large-text;
+}
+
+@mixin silly-links{
+    a{
+        color:blue;
+        background-color: red;
+    }
+}
+
+@include silly-links;
+
+@mixin compound{
+    @include highlighted-background;
+    @include header-text;
+}
+
+@mixin highlighted-background{background-color: #fc0;}
+@mixin header-text{font-size: 20px;}
+
+h4{
+    @include compound;
+}
+
+$font-base: 12px;
+
+@mixin linx($link, $visit, $hover, $active)
+{
+    a{
+        color: $link;
+    }
+
+    &:visited{
+        color:$visit;
+    }
+
+    &:hover{
+        color:$hover;
+    }
+    &:active{
+        color:$active;
+    }
+}
+
+#main{
+    @include linx(white, blue, green,red);
+}
+
+$font-base:12px;
+
+@mixin sexy-border($color, $width:1in){
+    border:{
+        color: $color;
+        width: $width;
+        style: dashed;
+    }
+}
+
+p{@include sexy-border(blue);}
+h1{@include sexy-border(blue, 2in);}
+
+p{@include sexy-border($color: blue )}
+h1{@include sexy-border($color: blue, $width:2in )}
+
+@mixin box-shadow($shadow...){
+    -moz-box-shadow: $shadow;
+    -webkit-bow-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
+.shadows{
+    @include box-shadow(0px 4px 5px #666, 2px 6px 10px #999);
+}
+
+.message{
+    border: 1px solid #ccc;
+    padding: 10px;
+    color:#333;
+}
+
+.success{
+    @extend .message;
+    border-color: green;
+}
+
+.error{
+    @extend .message;
+    border-color:red;
+}
+
+.warning{
+    @extend .message;
+    border-color: yellow;
+}
+
+.attention{
+    font-size: 3em;
+    background-color: #ff0;
+}
+
+.seriousError{
+    @extend .error;
+    @extend .attention;
+    border-width: 3px;
+}
+
+.error{
+    border: 1px #f00;
+    background-color: #fdd;
+}
+
+.seriousError{
+    @extend .error;
+    border-width: 3px;
+}
+
+.criticalError{
+    @extend .seriousError;
+    position: fixed;
+    top:10%;
+    bottom:10%;
+    left:10%;
+    right:10%;
+}
+
+%foo{
+    color:red;
+}
+
+.bar{
+    @extend %foo;
+    background: blue;
+}
+
+.baz{
+    @extend %foo;
+    background-color: yellow;
+}
+
+@mixin hide-text{
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+%hide-text{
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+@mixin border-radius($radius){
+    border: $radius;
+}
+.foo{
+    //@include hide-text;
+    @extend %hide-text;
+    @include border-radius(5px);
+}
+
+.bar{
+    //@include hide-text;
+    @extend %hide-text;
+    @include border-radius(7px);
+}
+
+.baz{
+    //@include hide-text;
+    @extend %hide-text;
+    @include border-radius(9px);
+}
+
+#main p{
+    color:#00ff00;
+    width: 97%;
+
+    .redbox{
+        background-color: #ff0000;
+        color:#000000;
+    }
+
+    p,div{
+        font-size: 2em;
+        a{font-weight: bold;}
+    }
+
+    pre{font-size: 3em;}
+
+    a{
+        &:hover{text-decoration: underline;}
+        //body.firefox&{font-weight: normal;}
+    }
+}
+
+.funky{
+    font: 20px/24px fantasy{
+        size:30em;
+        weight:bold;
+    }
+}
+
+$font-list: 'Raleway','Dosis','Lato';
+$pad-list: 10px 8px 12px;
+$multi-list: 'Roboto',15px 1.3em;
+
+$background-color-list: #4BC2A5 #606F40 #6648CA;
+$border-color-list: #ff9900  #73C227 #C23E50;
+$color-list:#111 #222 #333;
+
+@each $current-color in $color-list{
+    $i: index($color-list, $current-color );
+    .stuff-#{$i}{
+        color:$current-color;
+        background-color: nth($background-color-list, $i);
+        border: 1px solid nth($border-color-list, $i);
+    }
+    
+h1{
+    background-color: nth($background-color-list, $i);
+}
+}
+
+$primary-colors:(
+    "red":"#ff0000",
+    "green":"#00ff00",
+    "blue":"#0000ff"
+);
+
+@each $color-name, $color-code in $primary-colors{
+    .thing-#{$color-name}{
+        background: $color-code;
+    }
+}
+
+.btn{
+    background: #ededed;
+    border: 1px solid #555;
+    color:#555;
+
+    font{
+        size:1rem;
+    }
+
+    @at-root a#{&}{
+        text-decoration: none;
+    }
+}
+
+.parent{
+    font-size: 1rem;
+    padding:1em 2em;
+
+    @at-root .likely-modified{
+        font-size: 1.5em;
+    }
+}
+
+$list: a, b, c, d, e, f;
+$new-list:slice($list, 3, 5);
+$new-list:to-string($list);
+$new-list:to-string($list, '-');
+$new-list:prepend($list, a);
+
+$main-color:#6dcff6;
+$darker-color:darken($main-color, 20%);
+$lighter-color:lighten($main-color, 20%);
+$opaque-color:opacify($main-color, 0.5);
+$transparent-color:transparentize($main-color,0.3);
+
+$first-index:index($list, a);
+$last-index:last-index($list, a);
+
+@function my-caulculation-function($some-number, $another-number){
+    @return $some-number + $another-number;
+};
+
+@function calc-percent($target, $container){
+    @return ($target / $container) * 100%;
+};
+
+@function name-of-function($argument1, $argument2){
+    @return $argument1 + $argument2;
+};
+
+.container{
+    padding: my-caulculation-function(100px, 200px);
+}
+
+.inner-container{
+    width:calc-percent(250px,555px);
+}
+
+p{
+    @if 1 + 1 == 2 {border: 1px solid;}
+    @if 5 < 3      {border: 2px dot;}
+}
+
+@mixin test($condition){
+    $color: if($condition, blue, red);
+    color:$color;
+}
+
+@mixin txt($weight){
+    color:white;
+    @if $weight == bold {font-weight: bold;}
+}
+
+.txt1{
+    @include txt(none);
+}
+
+.txt2{
+    @include txt(bold);
+}
+
+@for $i from 1 through 3{
+    .item-#{$i}{width: 2em * $i;}
+}
+
+@each $usr in bob, john, bill, mike{
+    .#{$usr}-avatar{
+        background-image: url('/img/#{$usr}.png');
+    }
+}
+
+$alt: alert, yellow, red;
+$sub: submit, white, green;
+$bck: back, blue, transparent;
+
+@each $type, $txt, $back in $alt,$sub,$bck{
+    .#{$type}-button{
+        color:$txt;
+        
+    }
+}
+
+$ppl: (usr1:bob, usr2:john, usr3:bill);
+
+@each $key,$usr in $ppl{
+    .#{$usr}-avatar{
+        background-image: url('/img/#{$usr}.png');
+    }
+}
+
+$x:1;
+@while $x < 13{
+    .col-#{$x}{width:100/12 * $x;}
+    $x:$x+1;
+}
